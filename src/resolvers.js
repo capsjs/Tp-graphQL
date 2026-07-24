@@ -15,6 +15,20 @@ export const resolvers = {
         },
 
         posts: async () => await Post.find().exec(),
+
+        post: async (_, { id }) => {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return null;
+            }
+            return await Post.findById(id).exec();
+        },
+
+        postsLikedByUser: async (_, { userId }) => {
+            if (!mongoose.Types.ObjectId.isValid(userId)) {
+                return [];
+            }
+            return await Post.find({ likes: userId }).exec();
+        },
     },
 
     User: {
